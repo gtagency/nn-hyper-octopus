@@ -11,7 +11,8 @@ with g.as_default():
     b =  tf.Variable(tf.zeros([3]), name='b')
     pred = tf.sigmoid(tf.matmul(X, W) + b)
     cost = tf.reduce_mean(tf.square(Y - pred))
-    train_step = tf.train.GradientDescentOptimizer(.0004).minimize(cost)
+    learningRate = tf.placeholder(tf.float32, shape=(), name='learningRate')
+    train_step = tf.train.GradientDescentOptimizer(learningRate).minimize(cost)
     init = tf.initialize_all_variables()
 
 sess=tf.InteractiveSession(graph=g)
@@ -23,13 +24,15 @@ input_data = np.delete(input_data, 0, 1)
 extractedData = extractedData.tolist();
 extractedData[:] = [x - 1 for x in extractedData]
 extractedData = np.eye(3)[extractedData]
-data = {X: input_data.reshape(178, 13), Y: extractedData.reshape(178, 3)}
+data = {X: input_data.reshape(178, 13), Y: extractedData.reshape(178, 3), learningRate: 0.0003}
 
 while((1 - sess.run(cost, feed_dict=data)) < .97):
-    for i in range(10000):
+    for i in range(1000):
         sess.run(train_step, feed_dict=data)
     print(1 - sess.run(cost, feed_dict=data))
+    print(sess.run(learningRate, feed_dict=data))
 print(sess.run(pred, feed_dict=data))
+
 
 
 
