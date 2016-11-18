@@ -34,7 +34,7 @@ def fitness(individual):
     sess=tf.InteractiveSession(graph=individual.g)
     data = {individual.X: input_data.reshape(178, 13), individual.Y: extractedData.reshape(178, 3)}
     sess.run(individual.init)
-    for i in range(50000):
+    for i in range(25000):
         sess.run(individual.train_step, feed_dict=data)
     print('.',end="")
     sys.stdout.flush()
@@ -65,8 +65,9 @@ def evolve(pop):
 
 #print(fitness(gen_individual(0.0004)))
 pop = population(20)
-for i in range(50):
+for i in range(25):
     pop = evolve(pop)
+    print(" ")
 
-print(pop[0])
+print(pop[0].learning_rate)
 print(fitness(pop[0]))
