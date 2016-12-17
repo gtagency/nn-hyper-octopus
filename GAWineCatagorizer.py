@@ -28,7 +28,7 @@ def gen_individual(learning_rate):
     return NN(uniform(0, learning_rate))
 
 def population(count):
-    return [gen_individual(0.001) for x in range(count)]
+    return [gen_individual(0.01) for x in range(count)]
 
 def fitness(individual):
     sess=tf.InteractiveSession(graph=individual.g)
@@ -42,7 +42,7 @@ def fitness(individual):
 
 def evolve(pop):
     graded = [(fitness(x), x) for x in pop]
-    graded = [x[1] for x in sorted(graded)]
+    graded = [x[1] for x in sorted(graded, key=lambda y: y[0])]
     parents = graded[:5]
     #randomly add other individuals
     for individual in graded[5:]:
@@ -63,11 +63,11 @@ def evolve(pop):
     parents.extend(children)
     return parents 
 
-#print(fitness(gen_individual(0.0004)))
 pop = population(20)
+print(fitness(pop[0]))
 for i in range(25):
     pop = evolve(pop)
-    print(" ")
+    print()
 
 print(pop[0].learning_rate)
 print(fitness(pop[0]))

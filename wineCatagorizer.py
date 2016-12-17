@@ -24,12 +24,14 @@ extractedData = extractedData.tolist();
 extractedData[:] = [x - 1 for x in extractedData]
 extractedData = np.eye(3)[extractedData]
 data = {X: input_data.reshape(178, 13), Y: extractedData.reshape(178, 3)}
-
+epochs = 0
 while((1 - sess.run(cost, feed_dict=data)) < .97):
     for i in range(10000):
         sess.run(train_step, feed_dict=data)
+    epochs += 1
     print(1 - sess.run(cost, feed_dict=data))
-print(sess.run(pred, feed_dict=data))
+print(sess.run(cost, feed_dict=data))
+print(str(epochs) + " epochs")
 
 
 
